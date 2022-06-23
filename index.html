@@ -15,20 +15,37 @@
         width: 300px;
         margin: 20px;
     }
+    input{
+        width: 500px;
+    }
 </style>
 <body>
     <div class="container">
         <h1>CREATE</h1>
-        <button type="button">눌러서 콘솔에 1이 뜨면 Insert</button>
+        <input id="type" type="text" placeholder="문의유형">
+        <input id="user" type="text" placeholder="작성자">
+        <input id="email" type="text" placeholder="이메일">
+        <input id="content" type="text" placeholder="본문">
+        <input id="password" type="password" placeholder="비밀번호">
+        <button id="create" type="button">눌러서 콘솔에 1이 뜨면 Insert</button>
         <h1>SELECT</h1>
-        <button type="button">누르면 콘솔에 Board List가 나와요</button>
+        <button id="select" type="button">누르면 콘솔에 Board List가 나와요</button>
         <h1>DELETE</h1>
-        <button type="button">누르면 데이터가 삭제되요</button>
+        <button id="delete" type="button">누르면 데이터가 삭제되요</button>
         <h1>UPDATE</h1>
-        <button type="button">누르면 데이터가 수정되요</button>
+        <button id="update" type="button">누르면 데이터가 수정되요</button>
         <h1>CNT</h1>
-        <button type="button">누르면 조회수가 올라가요</button>
+        <button id="cnt" type="button">누르면 조회수가 올라가요</button>
     </div>
+    <label
+            ><input
+              class="pw-or-not-y"
+              type="radio"
+              name="pw-or-not"
+              value="y"
+              checked
+            />비밀글</label
+          >
 </body>
 <script
     src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -36,6 +53,35 @@
     crossorigin="anonymous"
 ></script>
 <script>
+    $('#create').click(function(){
+        var boardCategory = $('#type').val();
+        var boardWriter = $('#user').val();
+        var boardEmail = $('#email').val();
+        var boardContent = $('#content').val();
+        var boardPassword = $('#password').val();
+        var isBoardSecurity = true;
 
+        var jsonData = {
+            boardCategory : boardCategory,
+            boardWriter : boardWriter,
+            boardEmail : boardEmail,
+            boardContent : boardContent,
+            boardPassword : boardPassword,
+            isBoardSecurity : isBoardSecurity
+        }
+        //ajax
+        $.ajax({
+            url : 'http://localhost:8080/board',
+            type : 'POST',
+            contentType : 'application/json', // 서버에 json type으로 보낼 예정(요청)
+            dataType : 'json', // 서버 결과를 json으로 응답 받겠다.
+            data : JSON.stringify(jsonData),
+            success : function(response){
+                // 전송 한 data가 DB에 저장되었으면 alert
+                console.log(response) ;
+            }
+        })
+    })
+    console.log($('.pw-or-not-y').is(":checked"))
 </script>
 </html>
